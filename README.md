@@ -34,10 +34,10 @@ The DOM API is mostly organized into interfaces and relies heavily on inheritanc
 
 The Dom types, and the relationships between them, are actually defined in the `Dom` module that ships with `bs-platform` ([Source code](https://github.com/glennsl/bucklescript/blob/master/jscomp/others/dom.mli)), where you'll find a bunch of types that look like this:
 
-```ml
-type 'a _element
-type 'a element_like = 'a _element node_like
-type element = _baseClass element_like
+```reason
+type _element('a);
+type element_like('a) = node_like(_element('a));
+type element = element_like(_baseClass);
 ```
 
 This is subtyping implemented with abstract types and phantom arguments. The details of how this works isn't very important (but see [#23](https://github.com/reasonml-community/bs-webapi-incubator/pull/23) for a detailed explanation of how exactly this trickery works) in order to just use them, but there are a few things you should know:
@@ -52,13 +52,13 @@ This system works exceptionally well, but has one significant flaw: It makes typ
 If you've looked through the source code a bit, you've likely come across code like this:
 
 ```reason
-include EventTargetRe.Impl { type nonrec t = t };
-include NodeRe.Impl { type nonrec t = t };
-include ParentNodeRe.Impl { type nonrec t = t };
-include NonDocumentTypeChildNodeRe.Impl { type nonrec t = t };
-include ChildNodeRe.Impl { type nonrec t = t };
-include SlotableRe.Impl { type nonrec t = t };
-include Impl { type nonrec t = t };
+include EventTargetRe.Impl({ type nonrec t = t });
+include NodeRe.Impl({ type nonrec t = t });
+include ParentNodeRe.Impl({ type nonrec t = t });
+include NonDocumentTypeChildNodeRe.Impl({ type nonrec t = t });
+include ChildNodeRe.Impl({ type nonrec t = t });
+include SlotableRe.Impl({ type nonrec t = t });
+include Impl({ type nonrec t = t });
 ```
 
 This is the implementation inheritance. Each "inheritable" module defines an "Impl" module where all its exported functions are defined. `include NodeRe.Impl { type nonrec t = t };` means that all the functions in `NodeRe.Impl` should be included in this module, but with the `t` type of that module replaced by the `t` type of this one. And that's it, it now has all the functions.
@@ -66,6 +66,12 @@ This is the implementation inheritance. Each "inheritable" module defines an "Im
 Implementation inheritance is used instead of subtyping to make it easier to understand which functions operate on any given "subject". If you have an `element` and you need to use a function defined in `Node`, let's say `removeChild` you cannot just use `Node.removeChild`. Instead you need to use `Element.removeChild`, which you can since `Element` inherits from `Node`. As a general rule, always use the function in the module corresponding to the type you have. You'll find this makes it very easy to see what types you're dealing with just by reading the code.
 
 ## Changes
+
+### 0.9.1
+* Renamed `Document.docType` to `Document.doctype` to fix #95
+
+### 0.9.0
+* Support `bs-platform@3.0.0`. If your app isn't using that version, then don't upgrade to `0.9.0`; otherwise, please do!
 
 ### 0.8.0
 * Added `EventTarget.unsafeAsDocument`, `EventTarget.unsafeAsElement` and `EventTarget.unsafeAsWindow` functions
