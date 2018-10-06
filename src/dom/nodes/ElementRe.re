@@ -36,10 +36,10 @@ module Impl = (T: {type t;}) => {
   [@bs.set] external setOuterHTML : (T.t, string) => unit = "outerHTML"; /* experimental, but widely supported */
   [@bs.get] [@bs.return nullable] external prefix : T.t => option(string) = "";
   [@bs.get] external scrollHeight : T.t => int = ""; /* experimental, but widely supported */
-  [@bs.get] external scrollLeft : T.t => int = ""; /* experimental */
-  [@bs.set] external setScrollLeft : (T.t, int) => unit = "scrollLeft"; /* experimental */
-  [@bs.get] external scrollTop : T.t => int = ""; /* experimental, but widely supported */
-  [@bs.set] external setScrollTop : (T.t, int) => unit = "scrollTop"; /* experimental, but widely supported */
+  [@bs.get] external scrollLeft : T.t => float = ""; /* experimental */
+  [@bs.set] external setScrollLeft : (T.t, float) => unit = "scrollLeft"; /* experimental */
+  [@bs.get] external scrollTop : T.t => float = ""; /* experimental, but widely supported */
+  [@bs.set] external setScrollTop : (T.t, float) => unit = "scrollTop"; /* experimental, but widely supported */
   [@bs.get] external scrollWidth : T.t => int = ""; /* experimental */
   [@bs.get] external shadowRoot : T.t => Dom.element = ""; /* experimental */
   [@bs.get] external slot : T.t => string = ""; /* experimental */
@@ -50,7 +50,7 @@ module Impl = (T: {type t;}) => {
   [@bs.send.pipe : T.t] external attachShadowOpen : ([@bs.as {json|{ "mode": "open" }|json}] _) => Dom.shadowRoot = "attachShadow"; /* experimental */
   [@bs.send.pipe : T.t] external attachShadowClosed : ([@bs.as {json|{ "mode": "closed" }|json}] _) => Dom.shadowRoot = "attachShadow"; /* experimental */
   [@bs.send.pipe : T.t] external animate : (Js.t({..}), Js.t({..})) => Dom.animation = ""; /* experimental */
-  [@bs.send.pipe : T.t] external closest : string => Dom.element = ""; /* experimental */
+  [@bs.send.pipe : T.t] [@bs.return nullable] external closest : string => option(Dom.element) = ""; /* experimental */
   [@bs.send.pipe : T.t] external createShadowRoot : Dom.shadowRoot = ""; /* experimental AND deprecated (?!) */
   [@bs.send.pipe : T.t] [@bs.return nullable] external getAttribute : string => option(string) = "";
   [@bs.send.pipe : T.t] [@bs.return nullable] external getAttributeNS : (string, string) => option(string) = "";

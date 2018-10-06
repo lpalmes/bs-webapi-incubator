@@ -67,6 +67,24 @@ Implementation inheritance is used instead of subtyping to make it easier to und
 
 ## Changes
 
+### 0.12.0
+* (Breaking) Fixed return type if `StorageEvent.oldValue` and `StorageEvent.newValue`. They should be `nullable`, but were not.
+* Added `Url` and `UrlSearchParams`
+* Deprecated `Webapi.File.Url` in favor of `Webapi.Url`
+
+### 0.11.0
+* `EventTarget.dispatchEvent` now take a `Dom.event_like(_)` instead of just `Dom.event`, so it will accept any event subtype.
+* `Window.pageXOffset`, `pageYOffset`, `scrollX`, `scrollY`, `scrollLeft` and `scrollTop` now return `float`s instead of `int`s, and `Window.scroll`, `scrollBy`, `scrollTo`, `setScrollLeft` and `setScrollTop` take `float`s instead of `int`s
+* `HtmlElement.offsetParent` now returns an `option`
+* `Selection.anchorNode` and `Selection.focusNode` now return `option`s
+* `Element.closest` now returns an `option`
+
+### 0.10.0
+* Added inheritance of `HtmlElement` and its ancestors to `HtmlImageElement`
+* Deprecated `HtmlImageElement.onload`
+* Fixed inconsistencies with `HtmlImageElement.src` and `HtmlImageElement.getSrc`, breaking the API
+* Fleshed out `HtmlImageElement`
+
 ### 0.9.1
 * Renamed `Document.docType` to `Document.doctype` to fix #95
 
